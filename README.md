@@ -21,7 +21,7 @@ Questa soluzione fornisce un ambiente completo per distribuire un'applicazione W
 
 ### Preparazione dell'Ambiente
 
-1. Clonare il repository:
+Clonare il repository:
    ```bash
    git clone https://github.com/Dreadfulorca/EsameLaboratorioCloud.git
    cd EsameLaboratorioCloud
