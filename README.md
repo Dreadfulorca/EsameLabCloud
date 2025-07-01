@@ -31,7 +31,7 @@ Clonare il repository:
 
 Per avviare l'intera infrastruttura:
 ```bash
-docker compose up -d --build
+docker compose up -d 
 ```
 
 ## Verifica dello Stato
