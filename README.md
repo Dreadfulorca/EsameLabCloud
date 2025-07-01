@@ -46,7 +46,7 @@ L'output dovrebbe mostrare tutti i container con stato "running".
 ## Accesso all'Applicazione
 
 1. Aprire il browser all'indirizzo: `http://localhost:8080` (o la porta configurata)
-2. Effettuare il login con una delle credenziali preconfigurate:
+2. Effettuare il login con le credenziali preconfigurate:
 
    | Username | Password   |
    |----------|------------|
