@@ -94,4 +94,4 @@ docker compose up -d --build webapp
 Modifica del sistema di autenticazione
 	• Lavora sulla directory auth/
 Ricostruisci il container:
-docker compose up -d --build auth![image](https://github.com/user-attachments/assets/8d339286-bd92-49b7-90e5-2e541f55e91b)
+docker compose up -d --build auth
