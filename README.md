@@ -2,7 +2,7 @@
 
 ## Panoramica del Sistema
 
-Questa soluzione fornisce un ambiente completo per distribuire un'applicazione WebGL protetta da autenticazione, utilizzando container Docker orchestrati tramite Docker Compose. L'architettura è progettata per garantire sicurezza, scalabilità e facilità di manutenzione.
+Questo progetto realizza un'infrastruttura containerizzata per un'applicazione WebGL accessibile solo previa autenticazione. Tutti i componenti sono orchestrati tramite Docker Compose e isolati in container separati per una maggiore sicurezza e manutenibilità.
 
 ## Componenti Principali
 
