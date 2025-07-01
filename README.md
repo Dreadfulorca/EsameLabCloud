@@ -1,165 +1,69 @@
-# WebGL App Containerizzata
+# Guida all'Implementazione di un'Applicazione WebGL Containerizzata con Autenticazione
 
-Questo progetto realizza un'infrastruttura containerizzata per un'applicazione **WebGL** accessibile solo previa autenticazione. Tutti i componenti sono orchestrati tramite Docker Compose e isolati in container separati per una maggiore sicurezza e manutenibilità.
+## Panoramica del Sistema
 
----
+Questa soluzione fornisce un ambiente completo per distribuire un'applicazione WebGL protetta da autenticazione, utilizzando container Docker orchestrati tramite Docker Compose. L'architettura è progettata per garantire sicurezza, scalabilità e facilità di manutenzione.
 
-## 🔧 Stack Tecnologico
+## Componenti Principali
 
-* **Nginx** – Reverse Proxy (porta `8080`)
-* **Node.js + Express** – Servizio di autenticazione
-* **MySQL 8.0** – Database relazionale
-* **Apache HTTP Server** – Hosting dell'applicazione WebGL
-* **Docker Secrets** – Gestione sicura della password del database
+1. **Frontend**: Applicazione WebGL servita da Apache HTTP Server
+2. **Backend**: Servizio Node.js/Express per l'autenticazione
+3. **Database**: MySQL 8.0 per la gestione delle credenziali
+4. **Reverse Proxy**: Nginx per gestire il traffico e l'accesso
 
----
+## Configurazione Iniziale
 
-## 📦 Prerequisiti
+### Requisiti di Sistema
+- Docker Engine versione 20.10+
+- Docker Compose versione 2.5+
+- 1GB di spazio libero su disco
+- Accesso alla porta 8080
 
-* Docker installato
-* Docker Compose installato
-* Porta `8080` disponibile
+### Preparazione dell'Ambiente
 
----
+1. Clonare il repository:
+   ```bash
+   git clone https://github.com/Dreadfulorca/EsameLaboratorioCloud.git
+   cd EsameLaboratorioCloud
+   ```
 
-## 🚀 Avvio del Progetto
+## Deployment
 
-### 1. Clona il repository
-
+Per avviare l'intera infrastruttura:
 ```bash
-git clone https://github.com/Dreadfulorca/EsameLaboratorioCloud.git
-cd EsameLaboratorioCloud
+docker compose up -d --build
 ```
 
-### 2. Avvia i container
+## Verifica dello Stato
 
-```bash
-docker compose up -d
-```
-
-### 3. Verifica lo stato dei servizi
-
+Controllare che tutti i servizi siano operativi:
 ```bash
 docker compose ps
 ```
 
----
+L'output dovrebbe mostrare tutti i container con stato "running".
 
-## 🌐 Accesso all’Applicazione
+## Accesso all'Applicazione
 
-Apri il browser e visita:
-`http://localhost:8080`
+1. Aprire il browser all'indirizzo: `http://localhost:8080` (o la porta configurata)
+2. Effettuare il login con una delle credenziali preconfigurate:
 
-### Credenziali di test
+   | Username | Password   |
+   |----------|------------|
+   | admin    | admin123   |
 
-* `admin` / `admin123`
-* `user1` / `password123`
-* `demo` / `demo123`
+3. Dopo l'autenticazione verrai reindirizzato automaticamente all'applicazione WebGL.
 
-Dopo il login verrai reindirizzato automaticamente all'app WebGL.
+### Accesso al Database
 
----
-
-## 📁 Struttura del Progetto
-
-```
-.
-├── docker-compose.yml          # Definizione e orchestrazione dei servizi
-├── .env                        # Variabili d'ambiente personalizzabili
-├── secrets/
-│   └── db_password.txt         # Password del DB gestita con Docker Secrets
-├── nginx/
-│   └── nginx.conf              # Configurazione del reverse proxy
-├── mysql/
-│   └── init.sql                # Script di inizializzazione del database
-├── auth/                       # Backend di autenticazione (Node.js)
-│   ├── Dockerfile
-│   ├── server.js
-│   ├── package.json
-│   └── public/
-│       └── login.html
-└── webapp/                     # Applicazione WebGL servita da Apache
-    ├── Dockerfile
-    └── [file dell'app WebGL]
-```
-
----
-
-## ⚙️ Configurazione
-
-### Variabili d’Ambiente (`.env`)
-
-* `DB_NAME` – Nome del database MySQL
-* `DB_USER` – Nome utente del database
-* `NGINX_PORT` – Porta pubblica esposta (default: 8080)
-
-### Docker Secrets
-
-* La password del database è salvata in `secrets/db_password.txt` e montata in modo sicuro tramite Docker.
-
----
-
-## 🧰 Comandi Utili
-
-| Azione                 | Comando                                                      |
-| ---------------------- | ------------------------------------------------------------ |
-| Avvio servizi          | `docker compose up -d`                                       |
-| Stop dei servizi       | `docker compose down`                                        |
-| Visualizzazione log    | `docker compose logs [nome-servizio]`                        |
-| Rebuild di un servizio | `docker compose up -d --build [servizio]`                    |
-| Accesso al database    | `docker compose exec mysql mysql -u webgl_user -p webgl_app` |
-
----
-
-## ❗ Risoluzione Problemi
-
-* **App non disponibile:**
-
-  * Verifica che la porta 8080 sia libera
-  * Controlla i log: `docker compose logs`
-  * Assicurati che tutti i container siano attivi: `docker compose ps`
-
-* **Errore di connessione al database:**
-
-  * Attendi qualche secondo per l'inizializzazione
-  * Verifica i log del servizio di autenticazione: `docker compose logs auth`
-
-* **Reset completo dell'ambiente:**
-
+Per connettersi al database MySQL:
 ```bash
-docker compose down -v
-docker compose up -d
+docker compose exec mysql mysql -u $DB_USER -p $DB_NAME
 ```
 
----
+## Considerazioni sulla Sicurezza
 
-## 🔐 Sicurezza
-
-* Solo **Nginx** è esposto all'esterno (porta 8080)
-* Autenticazione **obbligatoria** per accedere all'applicazione
-* Comunicazione sicura tra container su rete interna Docker
-* **Password** database protetta tramite **Docker Secrets**
-
----
-
-## 🛠️ Sviluppo
-
-### Modifica dell'app WebGL
-
-* Aggiorna i file all’interno di `webapp/`
-* Ricostruisci il container:
-
-  ```bash
-  docker compose up -d --build webapp
-  ```
-
-### Modifica del sistema di autenticazione
-
-* Lavora sulla directory `auth/`
-* Ricostruisci il container:
-
-  ```bash
-  docker compose up -d --build auth
-  ```
-
----
+- Tutte le comunicazioni tra container avvengono su una rete Docker privata
+- L'accesso all'applicazione WebGL è protetto da autenticazione
+- Le credenziali del database sono gestite tramite Docker Secrets
+- Solo il reverse proxy Nginx è esposto esternamente
